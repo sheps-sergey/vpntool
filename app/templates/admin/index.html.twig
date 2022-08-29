@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VPN usage report{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    TABLE { border: 1px solid black; padding: 2px 6px;}
+    TR TD { word-break: break-all; white-space: nowrap; padding:1px 10px}
+    .warning { background: #ffb6c0
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1>VPN Usage report</h1>
+    <a href="/logout">Logout</a>
+</div>
+<div class="example-wrapper">
+    {% if data is defined and data is not null %}
+    <table>
+        <thead>
+            <td nowrap>Email</td>
+            <td>Name</td>
+            <td>IP</td>
+            <td>Country</td>
+            <td>City</td>
+            <td>Is allowed</td>
+            <td>Last connected</td>
+        </thead>
+
+        {% for item in data %}
+            <tr {{ item.isAllowedLocation ? '' : 'class="warning"' }}>
+                <td>{{ item.user.email }}</td>
+                <td>{{ item.user.title }}</td>
+                <td>{{ item.ip }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.city }}</td>
+                <td>{{ item.isAllowedLocation ? 'yes' : 'no'}}</td>
+                <td>{{ item.lastConnectedAt|date("Y-m-d h:i:s") }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        There is no data for a current moment
+    {% endif %}
+</div>
+{% endblock %}
